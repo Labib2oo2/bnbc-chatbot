@@ -24,7 +24,7 @@ def load_data():
     return chunks, bm25
 
 
-def retrieve(query, chunks, bm25, k=6):
+def retrieve(query, chunks, bm25, k=10):
     scores = bm25.get_scores(tok(query))
     ranked = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
     return [(chunks[i], scores[i]) for i in ranked if scores[i] > 0]
@@ -87,7 +87,7 @@ if query:
 
     with st.chat_message("assistant"):
         with st.spinner("খুঁজছি ও উত্তর তৈরি করছি..."):
-            results = retrieve(query, chunks, bm25, k=6)
+            results = retrieve(query, chunks, bm25, k=10)
             context = build_context(results)
             user_msg = f"Context from BNBC 2020:\n\n{context}\n\n---\n\nQuestion: {query}"
 
